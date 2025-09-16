@@ -1,0 +1,17 @@
+[
+  {
+    "code": "VOUCHER",
+    "name": "Cofi Voucher",
+    "price": 5.00
+  },
+  {
+    "code": "TSHIRT",
+    "name": "Cofi T-Shirt",
+    "price": 20.00
+  },
+  {
+    "code": "MUG",
+    "name": "Cofi Coffee Mug",
+    "price": 7.50
+  }
+]
