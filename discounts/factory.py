@@ -5,8 +5,9 @@ from discounts.bogo import BogoDiscount
 from discounts.bundle_fixed_price_discount import BundleFixedPriceDiscount
 from discounts.bulk_price_discount import BulkPriceDiscount
 
+from models.discounts import discount_json_item
 
-def load_discounts(discount_json_path : str):
+def load_discounts(discount_json_path : str) -> discount_json_item:
 
   try:
     with open(discount_json_path, 'r', encoding='utf-8') as f:
@@ -26,7 +27,7 @@ FACTORY_ITEMS_MAP = {
 }
 
 
-def discount_factory(discount_items):
+def discount_factory(discount_items : discount_json_item):
 
   result = []
 
