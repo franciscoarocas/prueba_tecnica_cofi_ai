@@ -12,16 +12,19 @@ logger = logging.getLogger(__name__)
 
 
 
-def load_json_data(json_data: str) -> ProductJsonType:
+def load_json_data(json_file_path: str) -> ProductJsonType:
   """
     Open a JSON string which contains the data of all products
     Args:
-        json_data (str): JSON string representing a list of products
+        json_file_path (str): The path to the JSON file
     Returns:
         ProductJsonType: A list of products represented as dictionaries
   """
   try:
-    items = json.loads(json_data)
+    with open(json_file_path, 'r', encoding='utf-8') as json_file:
+      items = json.load(json_file)
+  except FileNotFoundError:
+    logger.error(f"File not found: {json_file_path}")
   except json.JSONDecodeError as e:
     logger.error("Failed to decode JSON data")
     raise ValueError("Invalid JSON data") from e

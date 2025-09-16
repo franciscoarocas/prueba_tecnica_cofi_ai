@@ -1,0 +1,22 @@
+[
+  {
+    "type": "BUNDLE_FIXED_PRICE",
+    "id": "SWAG",
+    "components": { "TSHIRT": 1, "VOUCHER": 1, "MUG": 1 },
+    "bundle_price": 25.00
+  },
+  {
+    "type": "BULK_PRICE",
+    "id": "TSHIRT_3_PLUS",
+    "sku": "TSHIRT",
+    "min_quantity": 3,
+    "new_price": 19.00
+  },
+  {
+    "type": "BOGO",
+    "id": "VOUCHER_2X1",
+    "sku": "VOUCHER",
+    "required_quantity": 2,
+    "free_quantity": 1
+  }
+]
