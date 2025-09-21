@@ -1,4 +1,6 @@
 
+import logging
+
 from typing import List
 
 from models.product import ProductType
@@ -7,6 +9,8 @@ from models.discounts import DiscountType
 from copy import copy
 
 from decimal import Decimal
+
+logger = logging.getLogger(__name__)
 
 
 
@@ -37,7 +41,7 @@ class CheckOut:
           ProductType: The product added to the cart
     """
     if self.__debug:
-      print(f"Scanning product: {product.name} - Price: {product.price}")
+      logger.debug(f"Scanning product: {product.name} - Price: {product.price}")
     self.__cart.append(copy(product))
     return product
 
@@ -53,14 +57,14 @@ class CheckOut:
 
     for discount in self.__discounts.values():
       if self.__debug:
-        print(f"Applying discount: {discount.id}")
+        logger.debug(f"Applying discount: {discount.id}")
       current_discount = discount.apply_discount(self.__cart)
       if self.__debug:
-        print(f"Discount applied: {current_discount}")
+        logger.debug(f"Discount applied: {current_discount}")
       total += current_discount
 
     if self.__debug:
-      print(f"Total discount applied: {total}")
+      logger.debug(f"Total discount applied: {total}")
 
     return total
 
