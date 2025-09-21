@@ -1,6 +1,11 @@
 
+from typing import List
 
 from discounts.base import DiscountBase
+from models.product import ProductType
+
+from decimal import Decimal
+
 
 
 class BulkPriceDiscount(DiscountBase):
@@ -31,8 +36,29 @@ class BulkPriceDiscount(DiscountBase):
 
         super().__init__(**kwargs)
 
-    def apply_discount(self):
-        pass
+
+    def apply_discount(self, products : List[ProductType]) -> Decimal:
+        """
+            Apply the bulk price discount to the list of products in the cart
+            Args:
+                products (List[ProductType]): The list of products in the cart
+            Returns:
+                Decimal: The total discount amount applied to the cart
+        """
+
+        total = Decimal('0.00')
+
+        same_products = [product for product in products if product.code == self.__sku]
+
+        if not same_products:
+            return total
+
+        if len(same_products) >= self.__min_quantity:
+            for _ in range(len(same_products)):
+                total += (same_products[0].price - self.__new_price)
+
+        return total
+
 
     def __str__(self) -> str:
         return f"""

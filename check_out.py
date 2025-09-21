@@ -42,17 +42,42 @@ class CheckOut:
     return product
 
 
+  def apply_discounts(self) -> Decimal:
+    """
+      Apply all discounts to the current cart and return the total discount amount.
+      Returns:
+          Decimal: The total discount amount applied to the cart
+    """
+
+    total = Decimal('0.00')
+
+    for discount in self.__discounts.values():
+      if self.__debug:
+        print(f"Applying discount: {discount.id}")
+      current_discount = discount.apply_discount(self.__cart)
+      if self.__debug:
+        print(f"Discount applied: {current_discount}")
+      total += current_discount
+
+    if self.__debug:
+      print(f"Total discount applied: {total}")
+
+    return total
+
+
   def total(self) -> Decimal:
     """
       Calculate the total price of the products in the cart, applying any discounts
       Returns:
           Decimal: The total price of the products in the cart
     """
+    # ¿Esto es necesario?
+    # Ver si hay que borrar
     total = Decimal('0.00')
     for product in self.__cart:
-      total += product['price']
+      total += product.price
 
-    # TODO: Apply discounts
+    total = total - self.apply_discounts()
     return total
 
 

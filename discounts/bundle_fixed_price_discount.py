@@ -1,5 +1,10 @@
 
+from typing import List
+
 from discounts.base import DiscountBase
+from models.product import ProductType
+
+from decimal import Decimal
 
 
 class BundleFixedPriceDiscount(DiscountBase):
@@ -24,14 +29,34 @@ class BundleFixedPriceDiscount(DiscountBase):
 
         try:
             self.__components = kwargs["components"]
-            self.__bundle_price = kwargs["bundle_price"]
+            self.__bundle_price = Decimal(kwargs["bundle_price"])
         except KeyError:
             raise ValueError("Missing 'components' key in discount data")
 
         super().__init__(**kwargs)
 
-    def apply_discount(self):
-        pass
+
+    def apply_discount(self, products : List[ProductType]) -> Decimal:
+
+        counter_components = {component:0 for component in self.__components}
+        products_prices = {component:0 for component in self.__components}
+
+        for product in products:
+            if product.code in counter_components:
+                counter_components[product.code] += 1
+                products_prices[product.code] = product.price
+
+        min_count = min(counter_components.values())
+
+        combo_price_without_discount = Decimal('0.00')
+
+        for component in products_prices.values():
+            combo_price_without_discount += component
+
+        combo_without_discount = abs(combo_price_without_discount - self.__bundle_price)
+
+        return combo_without_discount * min_count
+
 
     def __str__(self) -> str:
         return f"""
