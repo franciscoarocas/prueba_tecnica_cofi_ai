@@ -8,6 +8,13 @@ from discounts.bulk_price_discount import BulkPriceDiscount
 from models.discounts import discount_json_item
 
 def load_discounts(discount_json_path : str) -> discount_json_item:
+  """
+    Load discounts from a JSON file.
+    Args:
+        discount_json_path (str): The path to the JSON file containing discount data.
+    Returns:
+        discount_json_item: A list of discounts represented as dictionaries.
+  """
 
   try:
     with open(discount_json_path, 'r', encoding='utf-8') as f:
@@ -45,5 +52,12 @@ def discount_factory(discount_items : discount_json_item):
 
 
 def print_all_discounts(discounts) -> None:
+  """
+    Print all discounts in a readable format
+    Args:
+        discounts (List[DiscountBase]): A list of DiscountBase instances
+    Returns:
+        None
+  """
   for discount in discounts:
     print(discount)

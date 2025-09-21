@@ -29,8 +29,20 @@ class DiscountBase(ABC):
 
     @abstractmethod
     def apply_discount(self, items : Any) -> Decimal:
+      """
+        Apply the discount to the given items and return the total discount amount.
+        Args:
+            items (Any): The items to which the discount will be applied
+        Returns:
+            Decimal: The total discount amount
+      """
       pass
 
     @abstractmethod
     def __str__(self) -> str:
+      """
+        Return a string representation of the discount.
+        Returns:
+            str: A string representation of the discount
+      """
       pass
