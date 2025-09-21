@@ -28,7 +28,7 @@ class DiscountBase(ABC):
         raise ValueError("Missing 'id' key in discount data")
 
     @abstractmethod
-    def apply_discount(self, items : Any) -> Decimal:
+    def apply_discount(self, items : Any) -> Decimal: # pragma: no cover
       """
         Apply the discount to the given items and return the total discount amount.
         Args:
@@ -39,7 +39,7 @@ class DiscountBase(ABC):
       pass
 
     @abstractmethod
-    def __str__(self) -> str:
+    def __str__(self) -> str: # pragma: no cover
       """
         Return a string representation of the discount.
         Returns:

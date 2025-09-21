@@ -71,8 +71,6 @@ class CheckOut:
       Returns:
           Decimal: The total price of the products in the cart
     """
-    # ¿Esto es necesario?
-    # Ver si hay que borrar
     total = Decimal('0.00')
     for product in self.__cart:
       total += product.price

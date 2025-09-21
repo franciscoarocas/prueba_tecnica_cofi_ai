@@ -1,11 +1,19 @@
 
 import json
+import logging
 
+from typing import List
+
+from discounts.base import DiscountBase
 from discounts.bogo import BogoDiscount
 from discounts.bundle_fixed_price_discount import BundleFixedPriceDiscount
 from discounts.bulk_price_discount import BulkPriceDiscount
 
 from models.discounts import discount_json_item
+
+
+logger = logging.getLogger(__name__)
+
 
 def load_discounts(discount_json_path : str) -> discount_json_item:
   """
@@ -19,10 +27,12 @@ def load_discounts(discount_json_path : str) -> discount_json_item:
   try:
     with open(discount_json_path, 'r', encoding='utf-8') as f:
         discounts = json.load(f)
-  except FileNotFoundError:
-    print(f"File not found: {discount_json_path}")
-  except json.JSONDecodeError:
-    print(f"Error decoding JSON from file: {discount_json_path}")
+  except FileNotFoundError as e:
+    logger.error(f"File not found: {discount_json_path}")
+    raise e
+  except json.JSONDecodeError as e:
+    logger.error(f"Error decoding JSON from file: {discount_json_path}")
+    raise e
 
   return discounts
 
@@ -34,7 +44,14 @@ FACTORY_ITEMS_MAP = {
 }
 
 
-def discount_factory(discount_items : discount_json_item):
+def discount_factory(discount_items : discount_json_item) -> List[DiscountBase]:
+  """
+    Create discount instances from a list of discount data.
+    Args:
+        discount_items (discount_json_item): A list of discount items represented as dictionaries.
+    Returns:
+        List[DiscountBase]: A list of instantiated discount objects.
+  """
 
   result = []
 
@@ -51,7 +68,7 @@ def discount_factory(discount_items : discount_json_item):
 
 
 
-def print_all_discounts(discounts) -> None:
+def print_all_discounts(discounts : List[DiscountBase]) -> None:
   """
     Print all discounts in a readable format
     Args:
