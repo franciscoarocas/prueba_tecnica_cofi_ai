@@ -1,5 +1,5 @@
 
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from typing import List
 
 from models.product import ProductJsonType, ProductType
@@ -23,8 +23,9 @@ def load_json_data(json_file_path: str) -> ProductJsonType:
   try:
     with open(json_file_path, 'r', encoding='utf-8') as json_file:
       items = json.load(json_file)
-  except FileNotFoundError:
+  except FileNotFoundError as e:
     logger.error(f"File not found: {json_file_path}")
+    raise e
   except json.JSONDecodeError as e:
     logger.error("Failed to decode JSON data")
     raise ValueError("Invalid JSON data") from e
@@ -48,20 +49,17 @@ def products_loader(json_data : ProductJsonType) -> List[ProductType]:
   for product in json_data:
 
     try:
-      result.append(ProductType(
-        code  = product['code'],
-        name  = product['name'],
-        price = Decimal(product['price'])
-      ))
+        result.append(ProductType(
+            code=product['code'],
+            name=product['name'],
+            price=Decimal(product['price'])
+        ))
     except KeyError as e:
-      logger.error(f"Missing key in product data: {e}")
-      raise ValueError(f"Missing key in product data: {e}")
-    except (Decimal.InvalidOperation, TypeError) as e:
-      logger.error(f"Invalid price value: {product.get('price')}")
-      raise ValueError(f"Invalid price value: {product.get('price')}")
-    except ValueError as e:
-      logger.error(f"Error creating ProductType: {e}")
-      raise e
+        logger.error(f"Missing key in product data: {e}")
+        raise ValueError(f"Missing key in product data: {e}")
+    except (InvalidOperation, TypeError) as e:
+        logger.error(f"Invalid price value: {product.get('price')}")
+        raise ValueError(f"Invalid price value: {product.get('price')}")
 
   return result
 

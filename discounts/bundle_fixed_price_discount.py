@@ -37,6 +37,13 @@ class BundleFixedPriceDiscount(DiscountBase):
 
 
     def apply_discount(self, products : List[ProductType]) -> Decimal:
+        """
+            Applies the bundle fixed price discount to the given list of products.
+            Args:
+                products (List[ProductType]): The list of products to which the discount will be applied.
+            Returns:
+                Decimal: The total discount amount.
+        """
 
         counter_components = {component:0 for component in self.__components}
         products_prices = {component:0 for component in self.__components}
